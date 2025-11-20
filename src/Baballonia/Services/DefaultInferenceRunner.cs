@@ -185,16 +185,20 @@ public class DefaultInferenceRunner(ILoggerFactory loggerFactory) : IInferenceRu
     // Guarantee an expression's index by using named parameter values
     private float[] OrganizeOutputShapes(IDisposableReadOnlyCollection<DisposableNamedOnnxValue> results)
     {
-        // Do nothing with the face model
+        // Is this model the face model?
         var candidate = results[0].AsEnumerable<float>().ToArray();
         if (candidate.Length == 45)
         {
             return candidate;
         }
 
-        // Else, order eye information
+        // Else, is this an older eye model?
+        if (_session.ModelMetadata.CustomMetadataMap.Count() == 0)
+        {
+            return [];
+        }
 
-        // Flatten model output
+        // Else, order eye information
         List<Tuple<string, float>> arKitExpressions = [];
         var outputExpressionNames= JsonConvert.DeserializeObject<string[]>(_session.
             ModelMetadata.
