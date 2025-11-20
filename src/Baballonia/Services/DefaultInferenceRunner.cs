@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Baballonia.Contracts;
+using Baballonia.Helpers;
 using Microsoft.Extensions.Logging;
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
+using Newtonsoft.Json;
 using OpenCvSharp;
 
 namespace Baballonia.Services;
@@ -160,14 +162,67 @@ public class DefaultInferenceRunner(ILoggerFactory loggerFactory) : IInferenceRu
 
         using var results = _session.Run(inputs);
 
-        List<float> arKitExpressions = [];
-        foreach (var result in results)
+        float[] output = OrganizeOutputShapes(results);
+        OutputSize = output.Length;
+        return output;
+    }
+
+    // Dictionary mapping eye output names to their indices
+    private static readonly Dictionary<string, int> OutputIndexMap = new()
+    {
+        { "leftEyePitch", 0 },
+        { "leftEyeYaw", 1 },
+        { "leftEyeLid", 2 },
+        { "leftEyeWiden", 3 },
+        { "leftBrow", 4 },
+        { "rightEyePitch", 5 },
+        { "rightEyeYaw", 6 },
+        { "rightEyeLid", 7 },
+        { "rightEyeWiden", 8 },
+        { "rightBrow", 9 }
+    };
+
+    // Guarantee an expression's index by using named parameter values
+    private float[] OrganizeOutputShapes(IDisposableReadOnlyCollection<DisposableNamedOnnxValue> results)
+    {
+        // Do nothing with the face model
+        var candidate = results[0].AsEnumerable<float>().ToArray();
+        if (candidate.Length == 45)
         {
-            arKitExpressions.AddRange(result.AsEnumerable<float>().ToArray());
+            return candidate;
         }
 
-        OutputSize = arKitExpressions.Count;
-        return arKitExpressions.ToArray();
+        // Else, order eye information
+
+        // Flatten model output
+        List<Tuple<string, float>> arKitExpressions = [];
+        var outputExpressionNames= JsonConvert.DeserializeObject<string[]>(_session.
+            ModelMetadata.
+            CustomMetadataMap["blendshape_names"])!;
+        int counter = 0;
+        foreach (var result in results)
+        {
+            var exps = result.AsEnumerable<float>().ToArray();
+            foreach (var exp in exps)
+            {
+                arKitExpressions.Add(new Tuple<string, float>(outputExpressionNames[counter], exp));
+                counter++;
+            }
+        }
+
+        float[] output = new float[arKitExpressions.Count];
+        foreach (var expression in arKitExpressions)
+        {
+            var name = expression.Item1;
+            var value = expression.Item2;
+
+            if (OutputIndexMap.TryGetValue(name, out var index))
+            {
+                output[index] = value;
+            }
+        }
+
+        return output;
     }
 
     public DenseTensor<float> GetInputTensor()
