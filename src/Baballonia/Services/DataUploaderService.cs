@@ -58,7 +58,7 @@ cGmQGUQ2S2mcUlUC5lN2EMkuJybKiMeALJNEk2IqBi/rZIWrCzHTcuuvjSOjyck0
     {
         var dataToUpload = await File.ReadAllBytesAsync(pathToFile);
         var fileName = Path.GetFileName(pathToFile);
-        var uniqueName = $"{_identityService.GetUniqueUserId()}_{fileName}";
+        var uniqueName = $"{_identityService.GetUniqueUserId()}_{DateTime.Now:yyyyMMdd_HHmmss}_{fileName}";
 
         using var aes = Aes.Create();
         aes.GenerateKey();

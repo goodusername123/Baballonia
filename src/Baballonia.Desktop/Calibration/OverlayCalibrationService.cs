@@ -84,7 +84,8 @@ public class OverlayTrainerService(
 
         if (localSettingsService.ReadSetting<bool>("AppSettings_ShareEyeData"))
         {
-            await dataUploaderService.UploadDataAsync(destPath);
+            var userCal = Path.Combine(Utils.ModelDataDirectory, "user_cal.bin");
+            await dataUploaderService.UploadDataAsync(userCal);
         }
 
         await overlayProgram.WaitForExitAsync();
