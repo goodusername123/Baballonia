@@ -106,9 +106,8 @@ public class DefaultInferenceRunner(ILoggerFactory loggerFactory) : IInferenceRu
                 _logger.LogInformation("Initialized ExecutionProvider: DirectML for {ModelName}", modelName);
                 return;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _logger.LogError(ex, "Failed to configure Gpu.");
                 _logger.LogWarning("Failed to create DML Execution Provider on Windows. Falling back to CUDA...");
             }
         }
@@ -122,24 +121,45 @@ public class DefaultInferenceRunner(ILoggerFactory loggerFactory) : IInferenceRu
             _logger.LogInformation("Initialized ExecutionProvider: CUDA for {ModelName}", modelName);
             return;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            _logger.LogError(ex, "Failed to configure Gpu.");
             _logger.LogWarning("Failed to create CUDA Execution Provider.");
         }
 
         // And, if CUDA fails (or we have an AMD card)
-        // Try one more time with ROCm
+        // Try one more time with MiGraphX/ROCm
         try
         {
             sessionOptions.AppendExecutionProvider_ROCm();
             _logger.LogInformation("Initialized ExecutionProvider: ROCm for {ModelName}", modelName);
             return;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            _logger.LogError(ex, "Failed to configure ROCm.");
             _logger.LogWarning("Failed to create ROCm Execution Provider.");
+        }
+
+        try
+        {
+            sessionOptions.AppendExecutionProvider_MIGraphX();
+            _logger.LogInformation("Initialized ExecutionProvider: MIGraphX for {ModelName}", modelName);
+            return;
+        }
+        catch (Exception)
+        {
+            _logger.LogWarning("Failed to create MIGraphX Execution Provider.");
+        }
+
+        // Finally, try OpenVINO (for Intel CPUs/GPUs)
+        try
+        {
+            sessionOptions.AppendExecutionProvider_OpenVINO();
+            _logger.LogInformation("Initialized ExecutionProvider: OpenVINO for {ModelName}", modelName);
+            return;
+        }
+        catch (Exception)
+        {
+            _logger.LogWarning("Failed to create OpenVINO Execution Provider.");
         }
 
         _logger.LogWarning("No GPU acceleration will be applied.");
