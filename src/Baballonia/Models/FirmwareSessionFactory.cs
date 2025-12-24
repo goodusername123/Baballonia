@@ -97,7 +97,13 @@ public class FirmwareSessionFactory
             return null;
         }
 
-        sessionV2.Version = new Version(response.Value!.version);
+        // Strip trailing "rc0" string from erroneous v2 reported version
+        const string nit = "rc0";
+        var version = response.Value!.version;
+        sessionV2.Version = version.EndsWith(nit) ?
+            new Version(version.Replace(nit, string.Empty)) :
+            new Version(version);
+
         _logger.LogInformation($"Opened V2 session for {port}");
         return sessionV2;
     }
