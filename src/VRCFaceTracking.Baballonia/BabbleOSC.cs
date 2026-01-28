@@ -115,6 +115,10 @@ public class BabbleOsc
                             case "/mouthPucker":
                                 BabbleExpressions.BabbleExpressionMap.SetByKey2(oscMessage.Address, value * 4f);
                                 break;
+                            case "/mouthLeft":
+                            case "/mouthRight":
+                                BabbleExpressions.BabbleExpressionMap.SetByKey2(oscMessage.Address, value * 2f);
+                                break;
                             default:
                                 if (BabbleExpressions.BabbleExpressionMap.ContainsKey2(oscMessage.Address))
                                     BabbleExpressions.BabbleExpressionMap.SetByKey2(oscMessage.Address, value);
