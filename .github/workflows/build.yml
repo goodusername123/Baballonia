@@ -82,6 +82,8 @@ jobs:
 
       - name: Install NSIS
         uses: negrutiu/nsis-install@v2
+        with:
+           arch: x64
 
       - name: Download dependencies
         shell: pwsh
