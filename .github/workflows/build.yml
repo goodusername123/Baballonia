@@ -80,6 +80,11 @@ jobs:
           submodules: 'recursive'
           lfs: true
 
+      - name: Install NSIS
+        uses: negrutiu/nsis-install@v2
+        with:
+           arch: x64
+
       - name: Download dependencies
         shell: pwsh
         run: ./download_dependencies.ps1
@@ -94,7 +99,7 @@ jobs:
       - name: Run makensis
         run: |
           cd src/Baballonia.Desktop
-          "C:\Program Files (x86)\NSIS\makensis.exe" main.nsi
+          makensis main.nsi
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
