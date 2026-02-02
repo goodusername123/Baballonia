@@ -99,7 +99,7 @@ jobs:
       - name: Run makensis
         run: |
           cd src/Baballonia.Desktop
-          makensis "/DWORKFLOW_VERSION="${{github.event.inputs.version-number}}" main.nsi"
+          makensis /X"!define WORKFLOW_VERSION "${{github.event.inputs.version-number}}"" main.nsi
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
