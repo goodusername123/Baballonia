@@ -12,7 +12,7 @@
   !define APPFILE "Baballonia.Desktop.exe"
   !define PUBLISHER "dfgHiatus - Paradigm Reality Enhancement Laboratories"
   !ifndef WORKFLOW_VERSION
-    !define VERSION "1.1.0.7"
+    !define VERSION "1.1.0.9"
   !endif
   !ifdef WORKFLOW_VERSION
     !define VERSION "${WORKFLOW_VERSION}"
@@ -32,7 +32,7 @@
 
 ;--------------------------------
 ;Compression
-  SetCompressor /SOLID bzip2 ; "/FINAL" can be added to prevent anything from changing this later down the line.
+  SetCompressor /SOLID lzma ; "/FINAL" can be added to prevent anything from changing this later down the line.
   SetCompressorDictSize 32
   FileBufSize 64
   ManifestDPIAware true
