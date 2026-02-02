@@ -1,21 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Baballonia.CaptureBin.IO;
 using Baballonia.Contracts;
-using Baballonia.Desktop.Calibration.Aero;
-using Baballonia.Desktop.Trainer;
 using Baballonia.Helpers;
 using Baballonia.Services;
-using Baballonia.Services.events;
 using Microsoft.Extensions.Logging;
-using OpenCvSharp;
 using OverlaySDK;
-using OverlaySDK.Packets;
 
 namespace Baballonia.Desktop.Calibration;
 
@@ -26,7 +17,7 @@ public class OverlayTrainerService(
     EyePipelineManager eyePipelineManager,
     EyeCalibration eyeCalibration,
     DataUploaderService dataUploaderService)
-    : IVROverlay, IDisposable
+    : IVROverlay
 {
 
     private readonly CancellationTokenSource _tokenSource = new();
