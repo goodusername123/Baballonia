@@ -11,7 +11,12 @@
   !define NAME "Baballonia"
   !define APPFILE "Baballonia.Desktop.exe"
   !define PUBLISHER "dfgHiatus - Paradigm Reality Enhancement Laboratories"
-  !define VERSION "1.1.0.7"
+  !ifndef WORKFLOW_VERSION
+    !define VERSION "1.1.0.7"
+  !endif
+  !ifdef WORKFLOW_VERSION
+    !define VERSION "${WORKFLOW_VERSION}"
+  !endif
   !define SLUG "${NAME} v${VERSION}"
 
 ;--------------------------------
