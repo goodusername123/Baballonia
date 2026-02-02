@@ -11,7 +11,7 @@
   !define NAME "Baballonia"
   !define APPFILE "Baballonia.Desktop.exe"
   !define PUBLISHER "dfgHiatus - Paradigm Reality Enhancement Laboratories"
-  !define VERSION "1.1.0.9"
+  !define VERSION "1.1.0.7"
   !define SLUG "${NAME} v${VERSION}"
 
 ;--------------------------------
@@ -27,7 +27,7 @@
 
 ;--------------------------------
 ;Compression
-  SetCompressor /SOLID lzma ; "/FINAL" can be added to prevent anything from changing this later down the line.
+  SetCompressor /SOLID bzip2 ; "/FINAL" can be added to prevent anything from changing this later down the line.
   SetCompressorDictSize 32
   FileBufSize 64
   ManifestDPIAware true
