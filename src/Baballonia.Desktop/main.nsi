@@ -12,6 +12,10 @@
   !define APPFILE "Baballonia.Desktop.exe"
   !define PUBLISHER "dfgHiatus - Paradigm Reality Enhancement Laboratories"
   !define VERSION "1.1.0.9"
+  !ifdef WORKFLOW_VERSION ; override version string with one provided through GitHub Actions.
+    !undef VERSION
+    !define VERSION "${WORKFLOW_VERSION}"
+  !endif
   !define SLUG "${NAME} v${VERSION}"
 
 ;--------------------------------
