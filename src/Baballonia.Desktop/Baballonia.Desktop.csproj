@@ -5,7 +5,7 @@
         One for Windows with net8.0-windows TFM, one for MacOS with net8.0-macos and one with net8.0 TFM for Linux.-->
         <TargetFramework>net8.0</TargetFramework>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
-        <ApplicationIcon>Assets\IconOpaque_32x32.ico</ApplicationIcon>
+        <ApplicationIcon>Assets\IconOpaque.ico</ApplicationIcon>
         <Company>Paradigm Reality Enhancement Labs</Company>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <AssemblyVersion></AssemblyVersion>
@@ -80,6 +80,9 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="assets\IconOpaque_32x32.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="assets\IconOpaque.ico">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="assets\MUI_HEADERIMAGE_BITMAP.bmp">
